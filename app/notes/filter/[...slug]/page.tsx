@@ -1,13 +1,12 @@
 import Notes from "@/app/notes/filter/[...slug]/Notes.client";
 import { fetchNotes } from "@/lib/api";
 import { NoteTag } from "@/types/note";
-
-// import { Note } from "@/types/note";
+import { Metadata } from "next";
 interface Props {
   params: Promise<{ slug?: string[] }>;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const awaitedParams = await params;
   const currentTag = awaitedParams.slug?.[0] as NoteTag | "All" | undefined;
 

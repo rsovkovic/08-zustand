@@ -7,13 +7,8 @@ import { fetchNotes, FetchNotesResponse } from "@/lib/api";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
-import NoteForm from "@/components/NoteForm/NoteForm";
-import Modal from "@/components/Modal/Modal";
 import { NoteTag } from "@/types/note";
 import Link from "next/link";
-// import Loader from "../Loader/Loader";
-// import ErrorMessage from "../ErrorMessage/ErrorMessage";
-// import EmptyMessage from "../Empty/EmptyMessage";
 interface NotesProps {
   initialData: FetchNotesResponse;
   currentTag?: NoteTag | "All";
@@ -51,11 +46,6 @@ export default function Notes({ initialData, currentTag = "All" }: NotesProps) {
     setCurrentPage(page);
   }, 200);
 
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const handleOpen = () => setIsModalOpen(true);
-  // const handleClose = () => setIsModalOpen(false);
-
   const totalPages = data?.totalPages ?? 0;
   return (
     <div className={css.app}>
@@ -73,20 +63,10 @@ export default function Notes({ initialData, currentTag = "All" }: NotesProps) {
             }}
           />
         )}
-        {/* <button className={css.button} onClick={handleOpen}>
-          Create note +
-        </button> */}
         <Link href="/notes/action/create" className={css.button}>
           Create note +
         </Link>
-        {/* {isModalOpen && (
-          <Modal onClose={handleClose}>
-            <NoteForm onClose={handleClose} />
-          </Modal>
-        )} */}
       </header>
-      {/* {isLoading && <Loader />}
-      {isError && <ErrorMessage />} */}
       {isSuccess && data.notes.length === 0 && (
         <p className={css.emptyMessage}>No notes found.</p>
       )}
