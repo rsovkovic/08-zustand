@@ -24,6 +24,7 @@ const TagsMenu = () => {
       </button>
       {isOpen && (
         <ul className={css.menuList}>
+          ]{" "}
           {tags.map((tag) => (
             <li key={tag} className={css.menuItem}>
               <Link

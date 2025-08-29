@@ -10,10 +10,8 @@ interface FetchNotesParams {
 export interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
-  //   total: number;
-  //   page: number;
-  //   perPage: number;
 }
+
 export interface CreateNoteProps {
   title: string;
   content: string;
@@ -82,14 +80,3 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   );
   return response.data;
 };
-// export const fetchNoteByTag = async (tag: NoteTag): Promise<Note[]> => {
-//   const response = await axios.get<Note[]>(
-//     `https://notehub-public.goit.study/api/notes?tag=${tag}`,
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     }
-//   );
-//   return response.data;
-// };

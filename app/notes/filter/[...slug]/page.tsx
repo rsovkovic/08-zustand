@@ -1,43 +1,56 @@
-// import { fetchNotes } from "@/lib/api";
-
-// const Notes = async () => {
-//   const notes = await fetchNotes({ page: 1, perPage: 10 });
-//   console.log("notes", notes);
-//   return <div>Notes</div>;
-// };
-
-// export default Notes;
-
-// import css from "./App.module.css";
-// import NoteList from "@/components/NoteList/NoteList";
-// // import SearchBox from "@/components/SearchBox/SearchBox";
-// import { fetchNotes } from "@/lib/api";
-// const Notes = async () => {
-//   const response = await fetchNotes({ page: 1, perPage: 10 });
-
-//   return (
-//     <section>
-//       <h1>Notes List</h1>
-//       {response?.notes?.length > 0 && <NoteList notes={response.notes} />}
-//     </section>
-//   );
-// };
-
-// export default Notes;
-
 import Notes from "@/app/notes/filter/[...slug]/Notes.client";
 import { fetchNotes } from "@/lib/api";
 import { NoteTag } from "@/types/note";
+
 // import { Note } from "@/types/note";
 interface Props {
   params: Promise<{ slug?: string[] }>;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const awaitedParams = await params;
+  const currentTag = awaitedParams.slug?.[0] as NoteTag | "All" | undefined;
+
+  const tagFetch = !currentTag || currentTag === "All" ? undefined : currentTag;
+  const tagTitle = currentTag && currentTag !== "All" ? currentTag : "All Tags";
+
+  const { notes } = await fetchNotes({
+    page: 1,
+    perPage: 12,
+    search: "",
+    tag: tagFetch,
+  });
+
+  const description =
+    notes.length > 0
+      ? notes[0].content.slice(0, 160)
+      : `Browse notes with tag: ${tagTitle}`;
+
+  const pageTitle = `Notes - ${tagTitle}`;
+
+  return {
+    title: pageTitle,
+    description,
+    openGraph: {
+      title: pageTitle,
+      description,
+      // url: `https://notehub.com/notes/filter/${currentTag ?? "All"}`,
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Notes - ${tagTitle}`,
+        },
+      ],
+    },
+  };
 }
 
 export default async function NotesPage({ params }: Props) {
   const awaitedParams = await params;
   const currentTag = awaitedParams.slug?.[0] as NoteTag | "All" | undefined;
   const tagFetch = !currentTag || currentTag === "All" ? undefined : currentTag;
-  // const notes = await fetchNotes();
   const { notes, totalPages } = await fetchNotes({
     page: 1,
     perPage: 12,
@@ -47,8 +60,6 @@ export default async function NotesPage({ params }: Props) {
   return (
     <div>
       <Notes
-        // initialNotes={notes}
-        // initialTotalPages={totalPages}
         initialData={{ notes, totalPages }}
         currentTag={currentTag ?? "All"}
       />
