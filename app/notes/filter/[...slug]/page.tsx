@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       title: pageTitle,
       description,
-      // url: `https://notehub.com/notes/filter/${currentTag ?? "All"}`,
+      url: `https://08-zustand-mu-plum.vercel.app/notes/filter/${currentTag ?? "All"}`,
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
